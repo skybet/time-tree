@@ -1,0 +1,33 @@
+{
+  "name": "time-tree",
+  "description": "Timer utility for Node.js that gives you a contextual tree of where time is spent.",
+  "keywords": [
+    "time",
+    "timer",
+    "performance"
+  ],
+  "version": "0.0.0",
+  "author": "Sky Bet",
+  "contributors": [
+    "Stephen Melrose <me@stephenmelrose.co.uk>"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/skybet/time-tree.git"
+  },
+  "homepage": "https://github.com/skybet/time-tree",
+  "bugs": {
+    "url": "https://github.com/skybet/time-tree/issues"
+  },
+  "devDependencies": {
+    "mocha": "~1.14.0",
+    "should": "~2.1.0",
+    "sinon": "~1.7.3"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha",
+    "coverage": "rm -fr ./lib-cov/ && jscoverage ./lib/ ./lib-cov/ && MOCHA_COV=1 ./node_modules/.bin/mocha --reporter html-cov > ./coverage.html"
+  }
+}
