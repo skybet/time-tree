@@ -5,6 +5,7 @@ Timer utility for Node.js that gives you a contextual tree of where time is spen
 If `process.hrtime()` is available, it will use it, otherwise it will use `Date.now()`.
 
 [![Build Status](https://travis-ci.org/skybet/time-tree.png)](https://travis-ci.org/skybet/time-tree)
+[![NPM version](https://badge.fury.io/js/time-tree.png)](http://badge.fury.io/js/time-tree)
 
 ## Install
 
