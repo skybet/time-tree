@@ -58,13 +58,14 @@ See `examples/` for more.
 * [getResult](#getResult)
 
 <a name="constructor" />
-### timetree(name)
+### timetree(name[, context])
 
 Creates a new Timer object with the given name, and **starts the timer**.
 
 **Arguments**
 
 * name - Name of the timer.
+* context - Optional, see setContext.
 
 **Example**
 

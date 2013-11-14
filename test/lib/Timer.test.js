@@ -57,6 +57,12 @@ describe('lib/Timer', function() {
                 subject.startTime.should.eql([ 100000000, 0 ]);
             });
         }
+
+        it('should accept an initial context', function() {
+            subject = new Timer('event', { query: 'SELECT 1' });
+
+            subject.data.context.should.eql({query: 'SELECT 1'});
+        })
     });
 
     // ----------
