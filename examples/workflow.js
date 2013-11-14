@@ -39,6 +39,7 @@ return async.waterfall(
         }
     ],
     function() {
+        timer.end();
         console.log(util.inspect(timer.getResult(), false, 4));
     }
 );
