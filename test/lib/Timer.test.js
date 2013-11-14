@@ -1,7 +1,7 @@
 
 // Dependencies
 var assert = require('assert');
-var sinon = require('sinon');
+var Sinon = require('sinon');
 
 // Lib
 var DIR = process.cwd() + (process.env.MOCHA_COV ? '/lib-cov' : '/lib');
@@ -13,9 +13,11 @@ describe('lib/Timer', function() {
 
     var HRTIME_AVAIL = 'hrtime' in process;
 
-    var subject;
+    var sinon, subject;
 
     beforeEach(function() {
+
+        sinon = Sinon.sandbox.create({useFakeTimers: false});
 
         sinon.stub(Date, 'now').returns(1000000000000);
         if(HRTIME_AVAIL) {
@@ -29,10 +31,7 @@ describe('lib/Timer', function() {
 
         Timer.prototype.USE_HRTIME = HRTIME_AVAIL;
 
-        Date.now.restore();
-        if(HRTIME_AVAIL) {
-            process.hrtime.restore();
-        }
+        sinon.restore();
     });
 
     // ----------
