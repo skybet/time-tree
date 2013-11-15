@@ -55,6 +55,7 @@ See `examples/` for more.
 * [setContext](#setContext)
 * [split](#split)
 * [end](#end)
+* [done](#done)
 * [getResult](#getResult)
 
 <a name="constructor" />
@@ -117,6 +118,28 @@ Stops the timer, calculating the duration of the timer.
 
 ```javascript
 timer.end();
+```
+
+<a name="done" />
+### done()
+
+Wraps a callback to include a call `end`.
+
+**Arguments**
+
+* callback - function to wrap
+
+**Example**
+
+```javascript
+// instead of this
+fs.readFile(filename, function (err, file) {
+  timer.end();
+  callback(err, file);
+})
+
+// You can do this
+fs.readFile(filename, timer.done(callback));
 ```
 
 <a name="getResult" />
