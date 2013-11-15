@@ -93,13 +93,14 @@ timer.setContext({ actions: 2 });
 ```
 
 <a name="split" />
-### split(name)
+### split(name[, context])
 
 Creates a new sub timer with the given name, **starts the sub timer**, stores it in the parent timer, and returns it.
 
 **Arguments**
 
 * name - Name of the sub timer.
+* context - Optional context metadta for the sub timer, see [setContext()](#setContext).
 
 **Example**
 
