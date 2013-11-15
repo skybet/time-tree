@@ -1,4 +1,6 @@
 
+// This example requires you to install async
+
 var async = require('async');
 var timetree = require('../');
 var util = require('util');
@@ -34,7 +36,7 @@ return async.waterfall(
             return callback();
         },
         function(callback) {
-            var subTimer = timer.split('task3');
+            var subTimer = timer.split('task3', { actions: 3 });
             return async.map(
                 [1, 2, 3],
                 function(item, next) {

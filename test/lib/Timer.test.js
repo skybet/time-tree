@@ -17,7 +17,7 @@ describe('lib/Timer', function() {
 
     beforeEach(function() {
 
-        sinon = Sinon.sandbox.create({useFakeTimers: false});
+        sinon = Sinon.sandbox.create({ useFakeTimers: false });
 
         sinon.stub(Date, 'now').returns(1000000000000);
         if(HRTIME_AVAIL) {
@@ -91,8 +91,9 @@ describe('lib/Timer', function() {
 
             subject.data.timers.should.eql([ subTimer1 ]);
 
-            var subTimer2 = subject.split('subEvent');
+            var subTimer2 = subject.split('subEvent', { foo: 1 });
             subTimer2.data.name.should.equal('subEvent');
+            subTimer2.data.context.should.eql({ foo: 1 });
             subTimer2.should.not.equal(subject);
             subTimer2.should.not.equal(subTimer1);
 
@@ -144,6 +145,8 @@ describe('lib/Timer', function() {
             });
         }
     });
+
+    // ----------
 
     describe('#done()', function() {
 

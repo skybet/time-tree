@@ -66,7 +66,7 @@ Creates a new Timer object with the given name, and **starts the timer**.
 **Arguments**
 
 * name - Name of the timer.
-* context - Optional, see setContext.
+* context - Optional, see [setContext()](#setContext).
 
 **Example**
 
@@ -123,16 +123,16 @@ timer.end();
 <a name="done" />
 ### done()
 
-Wraps a callback to include a call `end`.
+Wraps a callback to include a call to [end()](#end).
 
 **Arguments**
 
-* callback - function to wrap
+* callback - Function to wrap
 
 **Example**
 
 ```javascript
-// instead of this
+// Instead of this
 fs.readFile(filename, function (err, file) {
   timer.end();
   callback(err, file);
