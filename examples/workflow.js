@@ -3,42 +3,53 @@ var async = require('async');
 var timetree = require('../');
 var util = require('util');
 
+function somethingSynchronous() {
+    var i = 100000, numbers = [];
+    while (i--) {
+        numbers.push(i);
+    }
+    return numbers.reduce(function(a,b) { return a * b; })
+}
+function databaseLookup(id, callback) {
+    setTimeout(function() {
+        callback(null, {
+            id: id,
+            data: 'Some Data about ' + id
+        });
+    }, 30 + Math.random() * 50)
+}
+
 var timer = timetree('example');
 
 return async.waterfall(
     [
         function(callback) {
             var subTimer = timer.split('task1');
-            return setTimeout(function() {
-                subTimer.end();
-                return callback();
-            }, 40);
+            return setTimeout(subTimer.done(callback), 40);
         },
         function(callback) {
             var subTimer = timer.split('task2');
-            return setTimeout(function() {
-                subTimer.end();
-                return callback();
-            }, 40);
+            somethingSynchronous();
+            subTimer.end();
+            return callback();
         },
         function(callback) {
             var subTimer = timer.split('task3');
-            return async.each([1, 2, 3],
-                function(item, callback) {
+            return async.map(
+                [1, 2, 3],
+                function(item, next) {
                     var itemTimer = subTimer.split('item' + item);
-                    setTimeout(function() {
-                        itemTimer.end();
-                        return callback();
-                    }, 10);
+                    databaseLookup(item, itemTimer.done(next));
                 },
-                function() {
+                function(err, results) {
                     subTimer.end();
-                    return callback();
+                    var data = results.map(function(a) { return a.data; });
+                    return callback(err, data);
                 }
             );
         }
     ],
-    function() {
+    function(err, data) {
         timer.end();
         console.log(util.inspect(timer.getResult(), false, 4));
     }

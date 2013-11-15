@@ -124,7 +124,7 @@ describe('lib/Timer', function() {
         });
 
         if(HRTIME_AVAIL) {
-            it('should store name and start time using process.hrtime()', function() {
+            it('should store timer duration using process.hrtime()', function() {
 
                 Timer.prototype.USE_HRTIME = true;
                 process.hrtime.reset();
@@ -141,6 +141,69 @@ describe('lib/Timer', function() {
                 subject.end().should.equal(subject);
 
                 process.hrtime.calledTwice.should.be.true;
+            });
+        }
+    });
+
+    describe('#done()', function() {
+
+        it('should wrap a function', function() {
+            subject = new Timer('event');
+
+            var spy = sinon.stub().returns(42);
+            var wrapped = subject.done(spy);
+
+            spy.called.should.be.false;
+            wrapped().should.equal(42);
+            spy.called.should.be.true;
+        });
+
+        it('should pass through any arguments', function() {
+            subject = new Timer('event');
+
+            var spy = sinon.spy();
+            var wrapped = subject.done(spy);
+
+            wrapped(null, "hello");
+            spy.calledWith(null, "hello").should.be.true;
+        });
+
+        it('should use the same `this`', function() {
+            subject = new Timer('event');
+
+            var obj = {};
+            var spy = sinon.spy();
+            var wrapped = subject.done(spy);
+
+            wrapped.call(obj, null, "hello");
+            spy.calledOn(obj).should.be.true;
+        });
+
+        it('should end the timer', function(done) {
+            Timer.prototype.USE_HRTIME = false;
+            Date.now.returns(98);
+            subject = new Timer('event');
+            Date.now.returns(140);
+            process.nextTick(subject.done(function() {
+                subject.data.duration.should.equal(42);
+                done();
+            }))
+        })
+
+        if(HRTIME_AVAIL) {
+            it('should end the timer using process.hrtime()', function(done) {
+                Timer.prototype.USE_HRTIME = true;
+
+                process.hrtime.returns([100, 100]);
+
+                subject = new Timer('event');
+
+                process.hrtime.withArgs([ 100, 100 ]).returns([ 0, 150025000 ]);
+
+                process.nextTick(subject.done(function() {
+                    subject.data.duration.should.equal(150.025);
+                    done();
+                }))
             });
         }
     });
