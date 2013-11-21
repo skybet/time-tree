@@ -52,10 +52,15 @@ See `examples/` for more.
 ## Documentation
 
 * [Constructor](#constructor)
+* [getName](#getName)
+* [getDuration](#getDuration)
+* [getContext](#getContext)
 * [setContext](#setContext)
 * [split](#split)
 * [end](#end)
 * [wrap](#wrap)
+* [getSubTimer](#getSubTimer)
+* [getSubTimers](#getSubTimers)
 * [getResult](#getResult)
 
 <a name="constructor" />
@@ -75,10 +80,25 @@ var timetree = require('time-tree');
 var timer = timetree('myTimer');
 ```
 
+<a name="getName" />
+### getName()
+
+Gets the timer name.
+
+<a name="getDuraton" />
+### getDuraton()
+
+Gets the timer duration.
+
+<a name="getContext" />
+### getContext()
+
+Gets the context data for the timer.
+
 <a name="setContext" />
 ### setContext(context)
 
-Sets context data for the timer. This is returned with the timer data in [getResult()](#getResult).
+Sets the context data for the timer. This is returned with the timer data in [getResult()](#getResult).
 
 For example, if you're timing how long it takes to perform N actions, you may want to set N to the context.
 
@@ -122,7 +142,7 @@ timer.end();
 ```
 
 <a name="wrap" />
-### wrap()
+### wrap(callback)
 
 Wraps a callback to include a call to [end()](#end).
 
@@ -141,6 +161,38 @@ fs.readFile(filename, function (err, file) {
 
 // You can do this
 fs.readFile(filename, timer.wrap(callback));
+```
+
+<a name="getSubTimer" />
+### getSubTimer(name[, recursive])
+
+Returns the first sub timer object that matches the given name.
+
+**Arguments**
+
+* name - Name of timer to search for.
+* recursive - Whether to search recursively. Optional. Defaults to FALSE.
+
+**Example**
+
+```javascript
+timer.getSubTimer('subEvent');
+```
+
+<a name="getSubTimers" />
+### getSubTimers(name[, recursive])
+
+Returns the sub timer objects that match the given name.
+
+**Arguments**
+
+* name - Name of timer to search for.
+* recursive - Whether to search recursively. Optional. Defaults to FALSE.
+
+**Example**
+
+```javascript
+timer.getSubTimers('subEvent');
 ```
 
 <a name="getResult" />

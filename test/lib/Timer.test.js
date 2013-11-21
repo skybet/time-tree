@@ -67,14 +67,30 @@ describe('lib/Timer', function() {
 
     // ----------
 
-    describe('#setContext()', function() {
-        it('should store the passed context to the data', function() {
+    describe('#getName()', function() {
+        it('should return the timer name', function() {
+            subject.getName().should.equal('event');
+        });
+    });
 
-            assert.equal(subject.data.context, undefined);
+    describe('#getDuration()', function() {
+        it('should return the deep nested result of the timer', function() {
+            assert.equal(subject.getDuration(), null);
+            subject.data.duration = 300;
+            subject.getDuration().should.equal(300);
+        });
+    });
+
+    // ----------
+
+    describe('#(get|set)Context()', function() {
+        it('should allow you to get and set context metadata', function() {
+
+            assert.equal(subject.getContext(), null);
 
             var context = { foo: 1, bar: 2 };
             subject.setContext(context).should.equal(subject);
-            subject.data.context.should.equal(context);
+            subject.getContext().should.equal(context);
         });
     });
 
@@ -213,11 +229,60 @@ describe('lib/Timer', function() {
 
     // ----------
 
-    describe('#getResult()', function() {
-        it('should return the deep nested result of the timer', function() {
-            assert.equal(subject.getDuration(), null);
-            subject.data.duration = 300;
-            subject.getDuration().should.equal(300);
+    describe('#getSubTimer()', function() {
+
+        var sub1, sub2, sub3, sub4;
+
+        beforeEach(function() {
+            sub1 = subject.split('aaa');
+            sub2 = sub1.split('bbb');
+            sub3 = sub1.split('ccc');
+            sub4 = subject.split('ccc');
+        });
+
+        it('should return nothing if there is no match non-recursively', function() {
+            assert.equal(subject.getSubTimer('bbb'), null);
+        });
+
+        it('should return nothing if there is no match recursively', function() {
+            assert.equal(subject.getSubTimer('zzz', true), null);
+        });
+
+        it('should return first timer that matches the name non-recursively', function() {
+            subject.getSubTimer('ccc').should.equal(sub4);
+        });
+
+        it('should return first timer that matches the name', function() {
+            subject.getSubTimer('ccc', true).should.equal(sub3);
+        });
+    });
+
+    describe('#getSubTimers()', function() {
+
+        var sub1, sub2, sub3, sub4, sub5;
+
+        beforeEach(function() {
+            sub1 = subject.split('aaa');
+            sub2 = sub1.split('bbb');
+            sub3 = sub1.split('ccc');
+            sub4 = subject.split('ccc');
+            sub5 = subject.split('ddd');
+        });
+
+        it('should return nothing if there is no match non-recursively', function() {
+            subject.getSubTimers('bbb').should.eql([]);
+        });
+
+        it('should return nothing if there is no match recursively', function() {
+            subject.getSubTimers('zzz', true).should.eql([]);
+        });
+
+        it('should return first timer that matches the name non-recursively', function() {
+            subject.getSubTimers('ccc').should.eql([sub4]);
+        });
+
+        it('should return first timer that matches the name', function() {
+            subject.getSubTimers('ccc', true).should.eql([sub3, sub4]);
         });
     });
 
