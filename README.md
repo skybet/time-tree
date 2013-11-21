@@ -55,7 +55,7 @@ See `examples/` for more.
 * [setContext](#setContext)
 * [split](#split)
 * [end](#end)
-* [done](#done)
+* [wrap](#wrap)
 * [getResult](#getResult)
 
 <a name="constructor" />
@@ -121,8 +121,8 @@ Stops the timer, calculating the duration of the timer.
 timer.end();
 ```
 
-<a name="done" />
-### done()
+<a name="wrap" />
+### wrap()
 
 Wraps a callback to include a call to [end()](#end).
 
@@ -140,7 +140,7 @@ fs.readFile(filename, function (err, file) {
 })
 
 // You can do this
-fs.readFile(filename, timer.done(callback));
+fs.readFile(filename, timer.wrap(callback));
 ```
 
 <a name="getResult" />

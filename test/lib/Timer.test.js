@@ -148,13 +148,13 @@ describe('lib/Timer', function() {
 
     // ----------
 
-    describe('#done()', function() {
+    describe('#wrap()', function() {
 
         it('should wrap a function', function() {
             subject = new Timer('event');
 
             var spy = sinon.stub().returns(42);
-            var wrapped = subject.done(spy);
+            var wrapped = subject.wrap(spy);
 
             spy.called.should.be.false;
             wrapped().should.equal(42);
@@ -165,7 +165,7 @@ describe('lib/Timer', function() {
             subject = new Timer('event');
 
             var spy = sinon.spy();
-            var wrapped = subject.done(spy);
+            var wrapped = subject.wrap(spy);
 
             wrapped(null, "hello");
             spy.calledWith(null, "hello").should.be.true;
@@ -176,7 +176,7 @@ describe('lib/Timer', function() {
 
             var obj = {};
             var spy = sinon.spy();
-            var wrapped = subject.done(spy);
+            var wrapped = subject.wrap(spy);
 
             wrapped.call(obj, null, "hello");
             spy.calledOn(obj).should.be.true;
@@ -187,7 +187,7 @@ describe('lib/Timer', function() {
             Date.now.returns(98);
             subject = new Timer('event');
             Date.now.returns(140);
-            process.nextTick(subject.done(function() {
+            process.nextTick(subject.wrap(function() {
                 subject.data.duration.should.equal(42);
                 done();
             }))
@@ -203,12 +203,22 @@ describe('lib/Timer', function() {
 
                 process.hrtime.withArgs([ 100, 100 ]).returns([ 0, 150025000 ]);
 
-                process.nextTick(subject.done(function() {
+                process.nextTick(subject.wrap(function() {
                     subject.data.duration.should.equal(150.025);
                     done();
                 }))
             });
         }
+    });
+
+    // ----------
+
+    describe('#getResult()', function() {
+        it('should return the deep nested result of the timer', function() {
+            assert.equal(subject.getDuration(), null);
+            subject.data.duration = 300;
+            subject.getDuration().should.equal(300);
+        });
     });
 
     // ----------

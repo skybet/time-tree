@@ -27,7 +27,7 @@ return async.waterfall(
     [
         function(callback) {
             var subTimer = timer.split('task1');
-            return setTimeout(subTimer.done(callback), 40);
+            return setTimeout(subTimer.wrap(callback), 40);
         },
         function(callback) {
             var subTimer = timer.split('task2');
@@ -41,7 +41,7 @@ return async.waterfall(
                 [1, 2, 3],
                 function(item, next) {
                     var itemTimer = subTimer.split('item' + item);
-                    databaseLookup(item, itemTimer.done(next));
+                    databaseLookup(item, itemTimer.wrap(next));
                 },
                 function(err, results) {
                     subTimer.end();
