@@ -85,8 +85,8 @@ var timer = timetree('myTimer');
 
 Gets the timer name.
 
-<a name="getDuraton" />
-### getDuraton()
+<a name="getDuration" />
+### getDuration()
 
 Gets the timer duration.
 
